@@ -13,7 +13,6 @@ function Confirm (props){
       </section>
     </main>
 
-    
   )
 
 }
