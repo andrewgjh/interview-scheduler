@@ -18,12 +18,44 @@ export default function Application(props) {
     appointments: {},
     interviewers: {},
   });
-  const setDay = (day) => setState({ ...state, day });
+
+  const cancelInterview = id => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null,
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+    return axios.delete(`/api/appointments/${id}`).then(() => {
+      setState({ ...state, appointments });
+    });
+  };
+
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+    return axios
+      .put(`/api/appointments/${id}`, { interview })
+      .then(data => {
+        setState({ ...state, appointments });
+      })
+      .catch(err => console.log(err));
+  }
+
+  const setDay = day => setState({ ...state, day });
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day);
 
-  const schedule = dailyAppointments.map((appointment) => {
+  const schedule = dailyAppointments.map(appointment => {
     const interview = getInterview(state, appointment.interview);
     return (
       <Appointment
@@ -31,6 +63,8 @@ export default function Application(props) {
         {...appointment}
         interview={interview}
         interviewers={dailyInterviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
@@ -42,10 +76,10 @@ export default function Application(props) {
         axios.get("/api/appointments"),
         axios.get("/api/interviewers"),
       ])
-      .then((all) => {
+      .then(all => {
         const [days, appointments, interviewers] = all;
 
-        setState((prev) => ({
+        setState(prev => ({
           ...prev,
           days: days.data,
           appointments: appointments.data,
@@ -53,7 +87,6 @@ export default function Application(props) {
         }));
       });
   }, []);
-
   return (
     <main className="layout">
       <section className="sidebar">
@@ -67,7 +100,7 @@ export default function Application(props) {
           <DayList
             days={state.days}
             value={state.day}
-            onChange={(day) => setDay(day)}
+            onChange={day => setDay(day)}
           />
         </nav>
         <img
