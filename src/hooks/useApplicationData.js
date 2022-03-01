@@ -18,7 +18,14 @@ const useApplicationData = () => {
       [id]: appointment,
     };
     return axios.delete(`/api/appointments/${id}`).then(() => {
-      setState({ ...state, appointments });
+      const spots = state.days.find(obj => obj.name === state.day).spots + 1;
+      const days = state.days.map(day => {
+        if (day.name === state.day) {
+          return { ...day, spots };
+        }
+        return { ...day };
+      });
+      setState({ ...state, appointments, days });
     });
   };
 
@@ -32,7 +39,17 @@ const useApplicationData = () => {
       [id]: appointment,
     };
     return axios.put(`/api/appointments/${id}`, { interview }).then(data => {
-      setState({ ...state, appointments });
+      console.log(state);
+
+      const spots = state.days.find(obj => obj.name === state.day).spots - 1;
+      const days = state.days.map(day => {
+        if (day.name === state.day) {
+          return { ...day, spots };
+        }
+        return { ...day };
+      });
+
+      setState({ ...state, appointments, days });
     });
   }
 
