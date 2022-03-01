@@ -17,6 +17,7 @@ const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
 const ERROR_DELETE = "ERROR_DELETE";
 const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_MISSING_FIELD = "ERROR_MISSING_FIELD";
 
 function Appointment(props) {
   const deleteAppointment = () => {
@@ -31,11 +32,15 @@ function Appointment(props) {
       student: name,
       interviewer,
     };
-    transition(SAVING);
-    props
-      .bookInterview(props.id, interview)
-      .then(() => transition(SHOW))
-      .catch(err => transition(ERROR_SAVE, true));
+    if (interview.student && interview.interviewer) {
+      transition(SAVING);
+      props
+        .bookInterview(props.id, interview)
+        .then(() => transition(SHOW))
+        .catch(err => transition(ERROR_SAVE, true));
+    } else {
+      transition(ERROR_MISSING_FIELD);
+    }
   };
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -85,6 +90,12 @@ function Appointment(props) {
       )}
       {mode === ERROR_SAVE && (
         <Error message="We were unable to save the changes." onClose={back} />
+      )}
+      {mode === ERROR_MISSING_FIELD && (
+        <Error
+          message="Please make sure to add your name and select an interviewer."
+          onClose={back}
+        />
       )}
     </article>
   );
