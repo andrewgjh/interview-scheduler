@@ -35,7 +35,7 @@ function Appointment(props) {
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
-      .catch(err => console.log(err));
+      .catch(err => transition(ERROR_SAVE, true));
   };
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -74,7 +74,9 @@ function Appointment(props) {
           interviewers={props.interviewers}
           student={props.interview.student}
           interviewer={props.interview.interviewer.id}
-          onCancel={back}
+          onCancel={() => {
+            transition(SHOW);
+          }}
           onSave={save}
         />
       )}
@@ -82,10 +84,7 @@ function Appointment(props) {
         <Error message="The action could not be completed." onClose={back} />
       )}
       {mode === ERROR_SAVE && (
-        <Error
-          message="We were unable to save the appointment."
-          onClose={back}
-        />
+        <Error message="We were unable to save the changes." onClose={back} />
       )}
     </article>
   );
