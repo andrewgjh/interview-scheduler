@@ -5,7 +5,7 @@ import "components/InterviewList.scss";
 function InterviewerList(props) {
   const list = props.interviewers.map(interviewer => (
     <InterviewerListItem
-      key={interviewer.id}
+      key={interviewer.id} 
       {...interviewer}
       selected={interviewer.id === props.value}
       setInterviewer={() => props.onChange(interviewer.id)}
