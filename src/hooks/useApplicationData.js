@@ -30,6 +30,11 @@ const useApplicationData = () => {
   };
 
   function bookInterview(id, interview) {
+    const currentSpots = state.days.find(obj => obj.name === state.day).spots;
+    const spots =
+      state.appointments[id].interview === null
+        ? currentSpots - 1
+        : currentSpots;
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -39,9 +44,7 @@ const useApplicationData = () => {
       [id]: appointment,
     };
     return axios.put(`/api/appointments/${id}`, { interview }).then(data => {
-      console.log(state);
 
-      const spots = state.days.find(obj => obj.name === state.day).spots - 1;
       const days = state.days.map(day => {
         if (day.name === state.day) {
           return { ...day, spots };

@@ -93,7 +93,7 @@ function Appointment(props) {
       )}
       {mode === ERROR_MISSING_FIELD && (
         <Error
-          message="Please make sure to add your name and select an interviewer."
+          message="Please make sure to select an interviewer."
           onClose={back}
         />
       )}

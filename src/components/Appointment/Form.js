@@ -5,6 +5,7 @@ import Button from "components/Button";
 function Form(props) {
   const [student, setStudent] = useState(props.student || "");
   const [interviewerID, setInterviewerID] = useState(props.interviewer || null);
+  const [error, setError] = useState("");
 
   const reset = () => {
     setInterviewerID(null);
@@ -12,15 +13,25 @@ function Form(props) {
   };
 
   const cancel = () => {
-    props.onCancel();
     reset();
+    setError("");
+    props.onCancel();
   };
+  function validate(student) {
+    if (student === "") {
+      setError("Student name cannot be blank");
+      return;
+    }
+    setError("");
+    props.onSave(student, interviewerID);
+  }
 
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
         <form autoComplete="off" onSubmit={event => event.preventDefault()}>
           <input
+            data-testid="student-name-input"
             className="appointment__create-input text--semi-bold"
             name="name"
             type="text"
@@ -28,6 +39,7 @@ function Form(props) {
             value={student}
             onChange={event => setStudent(event.target.value)}
           />
+          <section className="appointment__validation">{error}</section>
         </form>
         <InterviewerList
           interviewers={props.interviewers}
@@ -42,11 +54,7 @@ function Form(props) {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button
-            Button
-            confirm
-            onClick={() => props.onSave(student, interviewerID)}
-          >
+          <Button Button confirm onClick={() => validate(student)}>
             Save
           </Button>
         </section>
