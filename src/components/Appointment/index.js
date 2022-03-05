@@ -25,7 +25,7 @@ function Appointment(props) {
     props
       .cancelInterview(props.id)
       .then(() => transition(EMPTY))
-      .catch(err => transition(ERROR_DELETE, true));
+      .catch(err => transition(ERROR_DELETE, 3));
   };
   const save = function (name, interviewer) {
     const interview = {
@@ -37,7 +37,7 @@ function Appointment(props) {
       props
         .bookInterview(props.id, interview)
         .then(() => transition(SHOW))
-        .catch(err => transition(ERROR_SAVE, true));
+        .catch(err => transition(ERROR_SAVE, 2));
     } else {
       transition(ERROR_MISSING_FIELD);
     }
