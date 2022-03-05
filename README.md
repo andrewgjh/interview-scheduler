@@ -4,9 +4,18 @@ This is a learning project developed using React. The main functionality of the 
 
 ## Setup
 
-Install dependencies with `npm install`.
+1. Clone this repository onto your local device.
+2. Install dependencies using the `npm install` command.
+3. Download the back-end server [scheduler-api](https://github.com/andrewgjh/scheduler-api) to connect the database and required routes.
+4. Start the web server using the `npm run local` command. The app will be served at <http://localhost:8000/>.
 
-Dependenices for this project are
+## Screenshots
+
+!['Application Main Page'](https://github.com/andrewgjh/interview-scheduler/blob/master/public/images/ScreenshotApp.png)
+!['Booking Form'](https://github.com/andrewgjh/interview-scheduler/blob/master/public/images/Create%20Form.png)
+!['Error Handling'](https://github.com/andrewgjh/interview-scheduler/blob/master/public/images/Error%20Messages.png)
+
+## Dependencies
 
 - react
 - axios
@@ -17,11 +26,11 @@ Dependenices for this project are
 - storybook
 - cypress
 
-## Screenshots
+## Learning Outcome
 
-!['Application Main Page'](https://github.com/andrewgjh/interview-scheduler/blob/master/public/images/ScreenshotApp.png)
-!['Booking Form'](https://github.com/andrewgjh/interview-scheduler/blob/master/public/images/Create%20Form.png)
-!['Error Handling'](https://github.com/andrewgjh/interview-scheduler/blob/master/public/images/Error%20Messages.png)
+- Creating reusuable React components
+- Creating custom hooks to seperate logic from components
+- Learning about unit, integration and E2E testing
 
 ## Running Webpack Development Server
 
